@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: ui_platform_auth_service
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    ports:
+      - "10100:8080"
+    env_file:
+      - .env

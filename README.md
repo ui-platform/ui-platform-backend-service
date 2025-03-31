@@ -1,1 +1,1 @@
-# ui_platform_backend_service
+# ui-platform-backend-service
