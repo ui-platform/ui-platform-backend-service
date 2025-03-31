@@ -70,8 +70,5 @@ jobs:
             docker rm ${{ needs.build.outputs.repository_name }} || true
             echo "Running container ${{ needs.build.outputs.repository_name }}"
             docker run -d --name ${{ needs.build.outputs.repository_name }} -p 11000:8080 --env-file ./${{ needs.build.outputs.repository_name }}.env ${{ needs.build.outputs.image_tag }}
-
-      - name: Cleanup Docker images
-        run: |
-          docker image prune -f
-          docker image prune -a -f
+            docker image prune -f
+            docker image prune -a -f
