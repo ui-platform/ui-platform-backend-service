@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"ui-platform-backend-service/pkg/jwt"
 )
 
 func (h *Handler) refresh(c *fiber.Ctx) error {
@@ -24,16 +23,8 @@ func (h *Handler) refresh(c *fiber.Ctx) error {
 			"message": "refresh token is empty",
 		})
 	}
-	// Проверяем refreshToken
-	_, err := jwt.ValidateRefreshToken(refreshToken, accessToken, h.appSecretKey)
-	if err != nil {
-		h.log.Error().Err(err).Msg("error validating refresh token")
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "error validating refresh token",
-		})
-	}
 	// Обновляем токены
-	newAccessToken, newRefreshToken, err := jwt.RefreshTokens(refreshToken, accessToken, h.appSecretKey)
+	newAccessToken, newRefreshToken, err := h.jwtService.RefreshTokens(refreshToken, accessToken)
 	if err != nil {
 		h.log.Error().Err(err).Msg("error refreshing tokens")
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

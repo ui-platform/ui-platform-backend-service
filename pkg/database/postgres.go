@@ -26,7 +26,7 @@ func NewPostgresDB(DBHost, DBPort, DBUser, DBName, DBPass, DBSSLMode string) (*P
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(1000)               // Рассчитано для 5000 RPS при среднем времени обработки запроса
+	db.SetMaxOpenConns(1000)               // Рассчитано для 10000 RPS при среднем времени обработки запроса
 	db.SetMaxIdleConns(100)                // Достаточно для обработки обычной нагрузки
 	db.SetConnMaxLifetime(5 * time.Minute) // Уменьшение вероятности проблем из-за старения соединений
 

@@ -7,19 +7,20 @@ import (
 	"github.com/rs/zerolog"
 	"time"
 	"ui-platform-backend-service/internal/services"
+	"ui-platform-backend-service/pkg/jwt"
 )
 
 type Handler struct {
-	log          zerolog.Logger
-	services     *services.Service
-	appSecretKey string
+	log        zerolog.Logger
+	services   *services.Service
+	jwtService *jwt.Service
 }
 
-func NewHandler(log zerolog.Logger, services *services.Service, appSecretKey string) *Handler {
+func NewHandler(log zerolog.Logger, services *services.Service, jwtService *jwt.Service) *Handler {
 	return &Handler{
-		log:          log,
-		services:     services,
-		appSecretKey: appSecretKey,
+		log:        log,
+		services:   services,
+		jwtService: jwtService,
 	}
 }
 
@@ -69,10 +70,9 @@ func (h *Handler) InitRoutes(port string) {
 
 			projects.Post("/", h.createProject)
 			projects.Get("/", h.getProjects)
-			//projects.Get("/:id", h.GetProjectById)
-			//projects.Put("/:id", h.UpdateProjectById)
+			//projects.Get("/:id", nil)
+			//projects.Put("/:id", nil)
 			projects.Delete("/:project_id", h.deleteProject)
-
 		}
 
 	}

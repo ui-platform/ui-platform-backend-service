@@ -3,7 +3,6 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"ui-platform-backend-service/internal/entity"
-	"ui-platform-backend-service/pkg/jwt"
 )
 
 func (h *Handler) login(c *fiber.Ctx) error {
@@ -30,7 +29,7 @@ func (h *Handler) login(c *fiber.Ctx) error {
 		})
 	}
 	// Создаем токены
-	accessToken, refreshToken, err := jwt.GenerateTokenPair(h.appSecretKey, userId)
+	accessToken, refreshToken, err := h.jwtService.GenerateTokenPair(userId)
 	if err != nil {
 		h.log.Error().Err(err).Msg("error generating tokens")
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

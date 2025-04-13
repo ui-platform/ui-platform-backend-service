@@ -4,11 +4,13 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"os"
+	"time"
 	"ui-platform-backend-service/internal/config"
 	"ui-platform-backend-service/internal/handlers"
 	"ui-platform-backend-service/internal/services"
 	"ui-platform-backend-service/internal/storages"
 	"ui-platform-backend-service/pkg/database"
+	"ui-platform-backend-service/pkg/jwt"
 	"ui-platform-backend-service/pkg/rabbit_mq"
 )
 
@@ -51,8 +53,14 @@ func Run() {
 	storage := storages.NewStorage(pg, redis)
 	// services
 	service := services.NewService(logger, producer, storage)
+	// jwt service
+	jwtService := jwt.New(jwt.Config{
+		SecretKey:       cfg.AppSecretKey,
+		AccessTokenTTL:  time.Hour * 24,
+		RefreshTokenTTL: time.Hour * 24 * 7,
+	}, nil)
 	// handlers
-	handler := handlers.NewHandler(logger, service, cfg.AppSecretKey)
+	handler := handlers.NewHandler(logger, service, jwtService)
 	// run
 	handler.InitRoutes(cfg.AppPort)
 }
