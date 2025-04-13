@@ -10,7 +10,7 @@ import (
 type Project interface {
 	Create(project entity.Project, ownerId string) (projectId string, err error)
 	GetAllByUserId(userId string) (projects []entity.Project, err error)
-	UpdateById(projects entity.Project) (err error)
+	UpdateById(project entity.Project) (err error)
 	DeleteById(projectId string) (err error)
 }
 
@@ -45,8 +45,8 @@ func (s *ProjectService) GetAllByUserId(userId string) (projects []entity.Projec
 	return projects, nil
 }
 
-func (s *ProjectService) UpdateById(projects entity.Project) (err error) {
-	return s.storage.Project.UpdateById(projects)
+func (s *ProjectService) UpdateById(project entity.Project) (err error) {
+	return s.storage.Project.UpdateById(project)
 }
 
 func (s *ProjectService) DeleteById(projectId string) (err error) {

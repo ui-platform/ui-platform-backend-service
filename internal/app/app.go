@@ -50,9 +50,17 @@ func Run() {
 	}
 	logger.Info().Msg("Redis: OK")
 	// storage
-	storage := storages.NewStorage(pg, redis)
+	storage := storages.NewStorage(storages.StorageDeps{
+		PostgresDB: pg,
+		Redis:      redis,
+		Log:        logger,
+	})
 	// services
-	service := services.NewService(logger, producer, storage)
+	service := services.NewService(services.ServiceDeps{
+		Log:      logger,
+		Producer: producer,
+		Storage:  storage,
+	})
 	// jwt service
 	jwtService := jwt.New(jwt.Config{
 		SecretKey:       cfg.AppSecretKey,

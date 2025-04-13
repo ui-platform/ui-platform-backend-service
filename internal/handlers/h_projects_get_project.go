@@ -16,7 +16,7 @@ func (h *Handler) getProjects(c *fiber.Ctx) error {
 			"message": "error creating project",
 		})
 	}
-	// Возвращаем projectId
+	// Возвращаем projects
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "ok",
 		"details": fiber.Map{

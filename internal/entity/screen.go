@@ -14,7 +14,7 @@ type Screen struct {
 	Name        string                 `json:"name" db:"name"`
 	Description string                 `json:"description,omitempty" db:"description"`
 	Status      string                 `json:"status,omitempty" db:"status"`
-	Content     map[string]interface{} `json:"content,omitempty" db:"content"`
+	Widgets     map[string]interface{} `json:"widgets,omitempty" db:"widgets"`
 	Settings    map[string]interface{} `json:"settings,omitempty" db:"settings"`
 	CreatedAt   time.Time              `json:"created_at,omitempty" db:"created_at"`
 	UpdatedAt   time.Time              `json:"updated_at,omitempty" db:"updated_at"`

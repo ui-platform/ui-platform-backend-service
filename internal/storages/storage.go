@@ -1,17 +1,26 @@
 package storages
 
-import "ui-platform-backend-service/pkg/database"
+import (
+	"github.com/rs/zerolog"
+	"ui-platform-backend-service/pkg/database"
+)
 
 type Storage struct {
-	User    *UserStorage
-	Project *ProjectStorage
-	Screen  *ScreenStorage
+	User    User
+	Project Project
+	Screen  Screen
 }
 
-func NewStorage(pg *database.PostgresDB, redis *database.Redis) *Storage {
+type StorageDeps struct {
+	PostgresDB *database.PostgresDB
+	Redis      *database.Redis
+	Log        zerolog.Logger
+}
+
+func NewStorage(deps StorageDeps) *Storage {
 	return &Storage{
-		User:    NewUserStorage(pg, redis),
-		Project: NewProjectStorage(pg, redis),
-		Screen:  NewScreenStorage(pg, redis),
+		User:    NewUserStorage(deps.PostgresDB, deps.Redis),
+		Project: NewProjectStorage(deps.PostgresDB, deps.Redis, deps.Log),
+		Screen:  NewScreenStorage(deps.PostgresDB, deps.Redis),
 	}
 }

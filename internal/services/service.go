@@ -9,11 +9,19 @@ import (
 type Service struct {
 	User    User
 	Project Project
+	Screen  Screen
 }
 
-func NewService(log zerolog.Logger, producer *rabbit_mq.Producer, storage *storages.Storage) *Service {
+type ServiceDeps struct {
+	Log      zerolog.Logger
+	Storage  *storages.Storage
+	Producer *rabbit_mq.Producer
+}
+
+func NewService(deps ServiceDeps) *Service {
 	return &Service{
-		User:    NewUserService(log, producer, storage),
-		Project: NewProjectService(log, producer, storage),
+		User:    NewUserService(deps.Log, deps.Producer, deps.Storage),
+		Project: NewProjectService(deps.Log, deps.Producer, deps.Storage),
+		Screen:  NewScreenService(deps.Log, deps.Storage),
 	}
 }
